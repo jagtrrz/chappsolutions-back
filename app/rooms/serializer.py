@@ -6,6 +6,13 @@ from app.rooms.models import Rooms
 
 
 class RoomsSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Rooms
+        fields = '__all__'
+
+
+class RoomsDetailsSerializer(serializers.ModelSerializer):
     total_nights = serializers.SerializerMethodField()
     total_price = serializers.SerializerMethodField()
     total_available = serializers.SerializerMethodField()

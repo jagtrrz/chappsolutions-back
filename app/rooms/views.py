@@ -6,7 +6,7 @@ from datetime import datetime
 
 from app.bookings.models import Bookings
 from app.rooms.models import Rooms
-from app.rooms.serializer import RoomsSerializer
+from app.rooms.serializer import RoomsSerializer, RoomsDetailsSerializer
 
 
 class RoomsViewSet(viewsets.ModelViewSet):
@@ -43,7 +43,7 @@ class RoomsViewSet(viewsets.ModelViewSet):
             'number_of_guests': guest
         }
 
-        serializer = self.serializer_class(rooms_available, many=True, context=context).data
+        serializer = RoomsDetailsSerializer(rooms_available, many=True, context=context).data
 
         return Response(serializer)
 

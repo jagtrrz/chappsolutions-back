@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import transaction
+from django.forms import ValidationError
 from rest_framework.response import Response
 from rest_framework import viewsets
 
@@ -34,6 +35,8 @@ class BookingsViewSet(viewsets.ModelViewSet):
         return Response(status=200, data=serializer.data)
 
     def list(self, request, *args, **kwargs):
+        if self.queryset.count() == 0:
+            raise ValidationError(message="No booking at the moment")
 
         page = self.paginate_queryset(self.queryset)
         if page is not None:
