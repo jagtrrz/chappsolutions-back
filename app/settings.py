@@ -26,7 +26,9 @@ SECRET_KEY = 'kadc*+u9oq88a=_4ja(j%u0gzvwo6pq1x03h5z#%r@khn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'https://josegtrrzchappsolutions.herokuapp.com/'
+]
 
 
 # Application definition
