@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-from django.urls import path, include
+from django.urls import path, include, reverse_lazy
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    path('', admin.site.urls),
+    path('', RedirectView.as_view(url=reverse_lazy('admin:index'))),
     path('admin/', admin.site.urls),
     url(r'^api/v1/bookings/', include('app.bookings.urls')),
     url(r'^api/v1/rooms/', include('app.rooms.urls')),
