@@ -65,7 +65,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = ['*']
 CORS_ORIGIN_WHITELIST = (
   'http://localhost:4200',
-  'https://lustrous-piroshki-70f03c.netlify.app'
+  'https://friendly-stardust-b227d6.netlify.app'
 )
 
 ROOT_URLCONF = 'app.urls'
@@ -113,6 +113,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
 
 
 # Internationalization

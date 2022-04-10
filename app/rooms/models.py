@@ -11,6 +11,7 @@ class Rooms(Audit):
     max_guest = models.IntegerField(help_text="Maximum number of guests per room", null=False)
     stock = models.IntegerField(help_text="Stock available for booking", null=False)
     stock_reserves = models.IntegerField(help_text="Total reserved stock units", null=True, default=0)
+    image_url = models.CharField(help_text="Room image", max_length=225, null=True, blank=True)
 
     class Meta:
         indexes = [

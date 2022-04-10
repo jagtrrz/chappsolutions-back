@@ -1,5 +1,6 @@
-import uuid
 
+import uuid
+from django.db.models import Q
 from django.db import transaction
 from django.forms import ValidationError
 from rest_framework.response import Response
@@ -18,9 +19,15 @@ class BookingsViewSet(viewsets.ModelViewSet):
     @transaction.atomic()
     def create(self, request, *args, **kwargs):
         data = request.data
-        #TODO MIRAR SI LAS FECHAS Y EL TIPO DE HAB ESTA LIBRE
-        room = Rooms.objects.filter(id=data['room']).first()
+
         new_contact = Contact.objects.create(**data['contact'])
+        room = Rooms.objects.filter(id=data['room']).first()
+
+        """Check if room is booking this dates"""
+        room_booking = Bookings.objects.filter(room=room).filter(Q(check_in__range=(data['check_in'], data['check_out'])) |
+                                           Q(check_out__range=(data['check_in'], data['check_out']))).first()
+        if room_booking is not None:
+            raise ValidationError('You cannot continue with the reservation. This room is booked on these dates')
 
         data['room'] = room
         data['contact'] = new_contact
@@ -28,15 +35,18 @@ class BookingsViewSet(viewsets.ModelViewSet):
 
         new_booking = Bookings.objects.create(**data)
 
-        print("ffffffffffffffffffffff", new_booking)
+        """Update room reserves"""
+        room.stock_reserves = room.stock_reserves + 1
+        room.save(update_fields=['stock_reserves'])
 
         serializer = self.serializer_class(new_booking)
 
         return Response(status=200, data=serializer.data)
 
     def list(self, request, *args, **kwargs):
+        
         if self.queryset.count() == 0:
-            raise ValidationError(message="No booking at the moment")
+            raise ValidationError("No booking at the moment")
 
         page = self.paginate_queryset(self.queryset)
         if page is not None:

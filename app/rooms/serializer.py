@@ -6,13 +6,12 @@ from app.rooms.models import Rooms
 
 
 class RoomsSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Rooms
         fields = '__all__'
 
 
-class RoomsDetailsSerializer(serializers.ModelSerializer):
+class RoomsAvailableSerializer(serializers.ModelSerializer):
     total_nights = serializers.SerializerMethodField()
     total_price = serializers.SerializerMethodField()
     total_available = serializers.SerializerMethodField()
@@ -20,13 +19,17 @@ class RoomsDetailsSerializer(serializers.ModelSerializer):
     check_out = serializers.SerializerMethodField()
     number_of_guests = serializers.SerializerMethodField()
 
+    class Meta:
+        model = Rooms
+        fields = '__all__'
+
     def get_total_nights(self, room):
         total_nigths = self.context.get('total_nights')
         return total_nigths
 
     def get_total_price(self, room):
         total_nigths = self.context.get('total_nights')
-        total_price = total_nigths * room.price_per_night
+        total_price = (total_nigths * room.price_per_night) if total_nigths else 0
         return total_price
 
     def get_total_available(self, room):
@@ -44,7 +47,4 @@ class RoomsDetailsSerializer(serializers.ModelSerializer):
         number_of_guests = self.context.get('number_of_guests')
         return number_of_guests
 
-    class Meta:
-        model = Rooms
-        fields = '__all__'
-
+    

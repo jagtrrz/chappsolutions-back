@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
 from django.conf.urls import url
 from django.urls import path, include, reverse_lazy
 from django.views.generic.base import RedirectView
@@ -22,6 +21,5 @@ from django.views.generic.base import RedirectView
 urlpatterns = [
     path('', RedirectView.as_view(url=reverse_lazy('admin:index'))),
     path('admin/', admin.site.urls),
-    url(r'^api/v1/bookings/', include('app.bookings.urls')),
-    url(r'^api/v1/rooms/', include('app.rooms.urls')),
+    url(r'^api/v1/', include('app.urls_api')),
 ]
