@@ -14,5 +14,8 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_total_nights(self, booking):
-        total_nights = (booking.check_out - booking.check_in).days
-        return total_nights
+        if type(booking.check_out) is str and type(booking.check_in) is str:
+            return None
+        else:
+            total_nights = (booking.check_out - booking.check_in).days
+            return total_nights
